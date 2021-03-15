@@ -27,7 +27,8 @@ namespace QuizApp_CoreWebAPI.Controllers
             _context = context;
         }
 
-        [HttpPost]
+       [HttpPost]
+       [Route("login")]
         public async Task<IActionResult> Post(LoginInfo _userData)
         {
 
@@ -49,13 +50,23 @@ namespace QuizApp_CoreWebAPI.Controllers
 
                    };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));    
 
                     var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
+                    var jwt_token = new JwtSecurityTokenHandler().WriteToken(token);
+                    return Ok(new { data = jwt_token });
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    var stream = "[encoded jwt]";
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadToken(stream);
+                    var tokenS = handler.ReadToken(stream) as JwtSecurityToken;
+                    var jti = tokenS.Claims.First(claim => claim.Type == "jti").Value;
+
+                  /*  var result = await HTTPRequest.PostAsyncResponse(URL, Params)
+var token = JToken.Parse(result);
+var data= token.Value<JArray>("data");*/
                 }
                 else
                 {
@@ -71,6 +82,7 @@ namespace QuizApp_CoreWebAPI.Controllers
         private async Task<UserInfo> GetUser(string username, string password)
         {
             return await _context.UserInfo.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+
         }
     }
 }

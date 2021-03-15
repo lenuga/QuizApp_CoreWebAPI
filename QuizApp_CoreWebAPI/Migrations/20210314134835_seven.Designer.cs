@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizApp_CoreWebAPI.Models;
 
 namespace QuizApp_CoreWebAPI.Migrations
 {
     [DbContext(typeof(OnlineQuizDBContext))]
-    partial class OnlineQuizDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210314134835_seven")]
+    partial class seven
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

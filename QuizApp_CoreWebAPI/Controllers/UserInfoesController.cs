@@ -10,8 +10,8 @@ using QuizApp_CoreWebAPI.Models;
 
 namespace QuizApp_CoreWebAPI.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    //[Authorize]
+    [Route("api/UserInfoes")]
     [ApiController]
     public class UserInfoesController : ControllerBase
     {
@@ -21,9 +21,9 @@ namespace QuizApp_CoreWebAPI.Controllers
         {
             _context = context;
         }
-
+        
         // GET: api/UserInfoes
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetUserInfo()
         {
             return await _context.UserInfo.ToListAsync();
@@ -79,6 +79,7 @@ namespace QuizApp_CoreWebAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Route("create")]
         public async Task<ActionResult<UserInfo>> PostUserInfo(UserInfo userInfo)
         {
             _context.UserInfo.Add(userInfo);
